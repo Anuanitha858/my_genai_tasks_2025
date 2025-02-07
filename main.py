@@ -64,7 +64,6 @@ with st.sidebar:
             "🌍🈶 Language Detection", 
             "🔤 Grammar correction", 
             "✅ Text classification", 
-            "🗣️ Speech to Text Transcription",
             "📝 Content Generation"
         ],
         icons=[
