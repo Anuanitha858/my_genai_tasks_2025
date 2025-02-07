@@ -1,0 +1,36 @@
+{
+    "invoice_details": {
+        "invoice_number": "INV-7644",
+        "order_number": "87254",
+        "invoice_date": "November 21, 2019",
+        "due_date": "December 01, 2019",
+        "total_due": "$112.50"
+    },
+    "sender_details": {
+        "name": "DEMO - Sliced Invoices",
+        "address": "Suite 5A-1204\n123 Somewhere Street\nYour City AZ 12345",
+        "email": "admin@slicedinvoices.com"
+    },
+    "recipient_details": {
+        "name": "ABC Business",
+        "address": "163 Mania St\nMelbourne, VIC 3000",
+        "email": "mania@abc.com"
+    },
+    "items": [
+        {
+            "quantity": "2.00",
+            "service": "APP DEVELOPMENT",
+            "rate": "$100.00",
+            "adjustment": null,
+            "sub_total": "$100.00"
+        }
+    ],
+    "tax_details": {
+        "tax_amount": "$12.50"
+    },
+    "bank_details": {
+        "bank_name": "ANZ Bank",
+        "account_number": null,
+        "bsb_number": null
+    }
+}
