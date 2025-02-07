@@ -10,7 +10,7 @@ import sentiment
 import language  
 import grammar
 import text_classification
-import speech_to_text 
+
 import content_generation 
 # Apply Medium Pink Theme to Sidebar & Remove Scrollbar
 st.markdown("""
@@ -109,9 +109,7 @@ elif selected == "🔤 Grammar correction":
 
 elif selected == "✅ Text classification":
     text_classification.run()
-
-elif selected == "🗣️ Speech to Text Transcription":
-    speech_to_text.run()  
+ 
 
 elif selected == "📝 Content Generation":
     content_generation.run()     
