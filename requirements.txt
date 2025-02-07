@@ -1,0 +1,11 @@
+google.generativeai
+streamlit
+PyMuPDF
+fitz
+fpdf
+PyPDF2
+streamlit-option-menu
+dotenv
+sklearn
+SpeechRecognition
+openai-whisper
