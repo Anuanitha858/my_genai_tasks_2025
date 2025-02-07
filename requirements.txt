@@ -7,5 +7,3 @@ PyPDF2
 streamlit-option-menu
 dotenv
 sklearn
-SpeechRecognition
-openai-whisper
