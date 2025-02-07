@@ -6,4 +6,4 @@ fpdf
 PyPDF2
 streamlit-option-menu
 python-dotenv
-sklearn
+
