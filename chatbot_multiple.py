@@ -36,7 +36,7 @@ def extract_text_from_pdf(file_path):
         return f"Error reading PDF: {e}"
 
 def generate_response(chat_history, user_query, invoice_text):
-    model = genai.GenerativeModel("gemini-pro")
+    model = genai.GenerativeModel("gemini-1.5-flash")
     history_text = "\n".join([f"User: {msg['user']}\nAI: {msg['ai']}" for msg in chat_history])
     
     prompt = f"""
