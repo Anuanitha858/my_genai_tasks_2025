@@ -6,7 +6,7 @@ import fitz  # PyMuPDF
 import google.generativeai as genai
 
 # Set up Gemini API
-GEMINI_API_KEY = "AIzaSyAuEizIGbZlE_FMCfwbcdyHYBz6R8al6Ik"
+GEMINI_API_KEY = os.getenv("AIzaSyAuEizIGbZlE_FMCfwbcdyHYBz6R8al6Ik")  # Load API key from environment variable
 genai.configure(api_key=GEMINI_API_KEY)
 
 # Folder containing multiple invoices
