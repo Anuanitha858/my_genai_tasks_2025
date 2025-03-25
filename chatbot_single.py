@@ -12,6 +12,7 @@ INVOICE_PDF_PATH = "invoice_templates/invoice_1.pdf"
 # Ensure session state variables are initialized
 if "conversation" not in st.session_state:
     st.session_state.conversation = []
+
 if "invoice_text" not in st.session_state:
     st.session_state.invoice_text = None  # Placeholder for extracted text
 
@@ -61,12 +62,7 @@ def generate_response(conversation_history, user_query, invoice_text):
 
     try:
         response = model.generate_content(prompt)
-
-        # Check if response contains valid content
-        if response and response.candidates and response.candidates[0].content.parts:
-            return response.candidates[0].content.parts[0].text
-        else:
-            return "I couldn't generate a response. Please try rephrasing your question."
+        return response.text if response and response.text else "I couldn't generate a response."
     except Exception as e:
         return f"Error generating response: {e}"
 
@@ -108,4 +104,3 @@ def run():
 # Run the chatbot when executed directly
 if __name__ == "__main__":
     run()
-
