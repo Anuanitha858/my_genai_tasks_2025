@@ -76,7 +76,7 @@ if "invoice_text" not in st.session_state:
 def run():
     st.title("💬 Multiple QnA Invoice Chatbot")
 
-    if not st.session_state.invoice_file:
+    if "invoice_file" not in st.session_state or not st.session_state.invoice_file:
         st.error("No invoices found. Please upload an invoice to proceed.")
         return
 
