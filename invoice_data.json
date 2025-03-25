@@ -1,0 +1,36 @@
+{
+    "invoice_details": {
+        "invoice_number": "INV-7644",
+        "order_number": "87254",
+        "invoice_date": "November 21, 2019",
+        "due_date": "December 01, 2019",
+        "total_due": "$212.50"
+    },
+    "sender_details": {
+        "name": "DEMO-Sliced Invoices",
+        "address": "Suite 5A-1204\n123 Somewhere Street\nYour City AZ 12345",
+        "email": "admin@slicedinvoices.com"
+    },
+    "recipient_details": {
+        "name": "Khutija Gandikota",
+        "address": "163 Mania St\nHyderabad 500081",
+        "email": "khutija@abc.com"
+    },
+    "items": [
+        {
+            "quantity": "2.00",
+            "service": "Python DEVELOPMENT",
+            "rate": "$100.00",
+            "adjustment": "0.00%",
+            "sub_total": "$200.00"
+        }
+    ],
+    "tax_details": {
+        "tax_amount": "$12.00"
+    },
+    "bank_details": {
+        "bank_name": "ICICI Bank",
+        "account_number": "9989 1234",
+        "bsb_number": "8688 492"
+    }
+}

@@ -21,7 +21,7 @@ def extract_text_from_pdf(file_path):
 
 # Function to generate a response using Gemini AI
 def generate_response(conversation_history, user_query, invoice_text):
-    model = genai.GenerativeModel("gemini-pro")
+    model = genai.GenerativeModel("")
 
     # Format chat history for context
     history_text = "\n".join([f"User: {msg['user']}\nAI: {msg['ai']}" for msg in conversation_history])
