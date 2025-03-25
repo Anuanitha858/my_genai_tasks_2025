@@ -70,12 +70,16 @@ if "chat_history" not in st.session_state:
     st.session_state.chat_history = []
 if "selected_invoice" not in st.session_state:
     st.session_state.selected_invoice = get_latest_invoice()
-if "invoice_text" not in st.session_state and st.session_state.selected_invoice:
-    st.session_state.invoice_text = extract_text_from_pdf(st.session_state.selected_invoice)
+if "invoice_text" not in st.session_state:
+    st.session_state.invoice_text = extract_text_from_pdf(st.session_state.selected_invoice) if st.session_state.selected_invoice else ""
 
 def run():
     st.title("💬Multiple QnA Invoice Chatbot")
 
+    # Ensure session state variables are always initialized
+    if "chat_history" not in st.session_state:
+        st.session_state.chat_history = []
+    
     # Display conversation history
     for msg in st.session_state.chat_history:
         with st.chat_message("user"):
