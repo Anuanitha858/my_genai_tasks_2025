@@ -35,9 +35,9 @@ def extract_text_from_pdf(file_path):
     except Exception as e:
         return f"Error reading PDF: {e}"
 
-def generate_response(conversation_history, user_query, invoice_text):
+def generate_response(chat_history, user_query, invoice_text):
     model = genai.GenerativeModel("gemini-pro")
-    history_text = "\n".join([f"User: {msg['user']}\nAI: {msg['ai']}" for msg in conversation_history])
+    history_text = "\n".join([f"User: {msg['user']}\nAI: {msg['ai']}" for msg in chat_history])
     
     prompt = f"""
     You are an AI chatbot that assists users with invoice-related queries.
@@ -55,8 +55,8 @@ def generate_response(conversation_history, user_query, invoice_text):
     for attempt in range(3):  
         try:
             response = model.generate_content(prompt)
-            if response and hasattr(response, 'text'):
-                return response.text
+            if response and response.candidates:
+                return response.candidates[0].content.parts[0].text
             else:
                 return "No valid response generated. Please try again later."
         except Exception as e:
@@ -66,26 +66,18 @@ def generate_response(conversation_history, user_query, invoice_text):
                 return f"Error generating response: {e}. Please try again later."
 
 # Initialize session state if not present
-if "conversation" not in st.session_state:
-    st.session_state.conversation = {}
-if "invoice_file" not in st.session_state:
-    st.session_state.invoice_file = get_latest_invoice() or ""
-if "invoice_text" not in st.session_state:
-    st.session_state.invoice_text = extract_text_from_pdf(st.session_state.invoice_file) if st.session_state.invoice_file else "No invoices available."
+if "chat_history" not in st.session_state:
+    st.session_state.chat_history = []
+if "selected_invoice" not in st.session_state:
+    st.session_state.selected_invoice = get_latest_invoice()
+if "invoice_text" not in st.session_state and st.session_state.selected_invoice:
+    st.session_state.invoice_text = extract_text_from_pdf(st.session_state.selected_invoice)
 
 def run():
-    st.title("💬 Multiple QnA Invoice Chatbot")
+    st.title("💬Multiple QnA Invoice Chatbot")
 
-    if "invoice_file" not in st.session_state or not st.session_state.invoice_file:
-        st.error("No invoices found. Please upload an invoice to proceed.")
-        return
-
-    current_invoice = st.session_state.invoice_file
-    if current_invoice not in st.session_state.conversation:
-        st.session_state.conversation[current_invoice] = []
-
-    # Display conversation history only for the selected invoice
-    for msg in st.session_state.conversation[current_invoice]:
+    # Display conversation history
+    for msg in st.session_state.chat_history:
         with st.chat_message("user"):
             st.write(msg["user"])
         with st.chat_message("assistant"):
@@ -99,22 +91,20 @@ def run():
             invoice_number = match.group(1)
             new_invoice_file = get_invoice_by_number(invoice_number)
             if new_invoice_file:
-                st.session_state.invoice_file = new_invoice_file
+                st.session_state.selected_invoice = new_invoice_file
                 st.session_state.invoice_text = extract_text_from_pdf(new_invoice_file)
-                if new_invoice_file not in st.session_state.conversation:
-                    st.session_state.conversation[new_invoice_file] = []
                 response = f"Loaded details for {invoice_number}. How can I assist?"
             else:
                 response = f"No invoice found matching {invoice_number}. Please check the invoice number and try again."
         else:
             response = generate_response(
-                st.session_state.conversation[current_invoice], 
+                st.session_state.chat_history, 
                 user_query, 
                 st.session_state.invoice_text
             )
 
-        # Append conversation to session state specific to the invoice
-        st.session_state.conversation[current_invoice].append({"user": user_query, "ai": response})
+        # Append conversation to session state
+        st.session_state.chat_history.append({"user": user_query, "ai": response})
 
         # Display the user input and assistant response
         with st.chat_message("user"):
