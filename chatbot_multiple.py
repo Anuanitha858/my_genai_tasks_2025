@@ -68,10 +68,13 @@ def generate_response(conversation_history, user_query, invoice_text):
 # Initialize session state if not present
 if "conversation" not in st.session_state:
     st.session_state.conversation = {}
-if "invoice_file" not in st.session_state:
+if "invoice_file" not in st.session_state or not st.session_state.invoice_file:
     st.session_state.invoice_file = get_latest_invoice()
-if "invoice_text" not in st.session_state and st.session_state.invoice_file:
-    st.session_state.invoice_text = extract_text_from_pdf(st.session_state.invoice_file)
+if "invoice_text" not in st.session_state or not st.session_state.invoice_text:
+    if st.session_state.invoice_file:
+        st.session_state.invoice_text = extract_text_from_pdf(st.session_state.invoice_file)
+    else:
+        st.session_state.invoice_text = "No invoices available."
 
 def run():
     st.title("💬 Multiple QnA Invoice Chatbot")
