@@ -2,7 +2,7 @@ import streamlit as st
 import fitz  # PyMuPDF
 import google.generativeai as genai
 
-# Set up Gemini API
+# Set up Gemini AI
 GEMINI_API_KEY = "AIzaSyAuEizIGbZlE_FMCfwbcdyHYBz6R8al6Ik"  # Replace with actual API key
 genai.configure(api_key=GEMINI_API_KEY)
 
@@ -14,7 +14,7 @@ if "conversation" not in st.session_state:
     st.session_state.conversation = []
 
 if "invoice_text" not in st.session_state:
-    st.session_state.invoice_text = None  # Placeholder for extracted text
+    st.session_state.invoice_text = None  # This ensures it exists
 
 # Function to extract text from invoice PDF
 def extract_text_from_pdf(file_path):
@@ -71,9 +71,12 @@ def run():
     """Runs the chatbot app."""
     st.title("💬 Single Invoice QnA Chatbot")
 
-    # Ensure session state variable is initialized before using it
+    # Ensure session state variables exist before use
     if "conversation" not in st.session_state:
         st.session_state.conversation = []
+
+    if "invoice_text" not in st.session_state or st.session_state.invoice_text is None:
+        st.session_state.invoice_text = extract_text_from_pdf(INVOICE_PDF_PATH)
 
     # Display chat history
     for msg in st.session_state.conversation:
@@ -102,5 +105,3 @@ def run():
             st.write(response)
 
 # Run the chatbot when executed directly
-if __name__ == "__main__":
-    run()
