@@ -68,16 +68,17 @@ def generate_response(conversation_history, user_query, invoice_text):
 # Initialize session state if not present
 if "conversation" not in st.session_state:
     st.session_state.conversation = {}
-if "invoice_file" not in st.session_state or not st.session_state.invoice_file:
-    st.session_state.invoice_file = get_latest_invoice()
-if "invoice_text" not in st.session_state or not st.session_state.invoice_text:
-    if st.session_state.invoice_file:
-        st.session_state.invoice_text = extract_text_from_pdf(st.session_state.invoice_file)
-    else:
-        st.session_state.invoice_text = "No invoices available."
+if "invoice_file" not in st.session_state:
+    st.session_state.invoice_file = get_latest_invoice() or ""
+if "invoice_text" not in st.session_state:
+    st.session_state.invoice_text = extract_text_from_pdf(st.session_state.invoice_file) if st.session_state.invoice_file else "No invoices available."
 
 def run():
     st.title("💬 Multiple QnA Invoice Chatbot")
+
+    if not st.session_state.invoice_file:
+        st.error("No invoices found. Please upload an invoice to proceed.")
+        return
 
     current_invoice = st.session_state.invoice_file
     if current_invoice not in st.session_state.conversation:
@@ -93,7 +94,7 @@ def run():
     user_query = st.chat_input("Ask about the invoice...")
 
     if user_query:
-        match = re.search(r"(INV-\\d+|invoice\\d+)", user_query, re.IGNORECASE)
+        match = re.search(r"(INV-\d+|invoice\d+)", user_query, re.IGNORECASE)
         if match:
             invoice_number = match.group(1)
             new_invoice_file = get_invoice_by_number(invoice_number)
